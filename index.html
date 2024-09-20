@@ -1,0 +1,242 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiger Sugar</title>
+    <style>  
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?crop=entropy&fit=crop&w=1600&h=900');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+        h1, h3 {
+            text-align: center;
+            color: #6a1b9a;
+        }
+        .menu {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #f48fb1;
+            border-radius: 10px;
+            background-color: skyblue;
+        }
+        .menu-column {
+            flex: 1;
+            padding: 0 10px;
+        }
+        .menu-item {
+            margin: 10px 0;
+            font-size: 1.2em;
+            color: #6a1b9a;
+        }
+        .button {
+            background-color: #ab47bc;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+        .button:hover {
+            background-color: #8e24aa;
+        }
+        .order-summary {
+            margin-top: 20px;
+            border-top: 2px solid #f48fb1;
+            padding-top: 10px;
+        }
+        .total {
+            font-weight: bold;
+            font-size: 1.5em;
+            color: #6a1b9a;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            color: #6a1b9a;
+        }
+        .thank-you {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: skyblue;
+        }
+        .payment-section {
+            margin-top: 20px;
+        }
+        .payment-option {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Welcome to Tiger Sugar</h1> 
+    
+    <h3>Menu</h3>
+    <div class="menu">
+        <div class="menu-column">
+            <div class="menu-item">Burger - $50</div>
+            <div class="menu-item">Pizza - $90</div>
+            <div class="menu-item">Fries - $40</div>
+            <div class="menu-item">Coffee - $70</div>
+            <div class="menu-item">Tea - $10</div>
+            <div class="menu-item">Cold Coffee - $100</div>
+        </div>
+        <div class="menu-column">
+            <div class="menu-item">Ice Cream - $60</div>
+            <div class="menu-item">Belgium Waffle - $150</div>
+            <div class="menu-item">Filter Coffee - $50</div>
+            <div class="menu-item">Margherita Pizza - $200</div>
+            <div class="menu-item">Masala Dosa - $60</div>
+            <div class="menu-item">Mango Milkshake - $180</div>
+            <div class="menu-item">Veg Biryani - $70</div>
+        </div>
+    </div>
+
+    <div>
+        <h3>Place Your Order</h3>
+        <label for="item-select">Choose an item:</label>
+        <select id="item-select">
+            <option value="burger">Burger - $50</option>
+            <option value="pizza">Pizza - $90</option>
+            <option value="fries">Fries - $40</option>
+            <option value="coffee">Coffee - $70</option>
+            <option value="tea">Tea - $10</option>
+            <option value="coldcoffee">Cold Coffee - $100</option>
+            <option value="icecream">Ice Cream - $60</option>
+            <option value="waffle">Belgium Waffle - $150</option>
+            <option value="filtercoffee">Filter Coffee - $50</option>
+            <option value="margheritapizza">Margherita Pizza - $200</option>
+            <option value="masaladosa">Masala Dosa - $60</option>
+            <option value="mangomilkshake">Mango Milkshake - $180</option>
+            <option value="vegbiryani">Veg Biryani - $70</option>
+        </select>
+        <button class="button" onclick="addItem()">Add to Order</button>
+    </div>
+
+    <div id="additional-order" style="display:none;">
+        <h3>Anything else you want to order?</h3>
+        <button class="button" onclick="promptAnotherItem()">Yes</button>
+        <button class="button" onclick="finishOrder()">No</button>
+    </div>
+
+    <div class="order-summary" id="order-summary">
+        <h3>Order Summary</h3>
+        <ul id="order-list"></ul>
+        <div class="total">Total: $<span id="total-amount">0</span></div>
+    </div>
+
+    <div class="payment-section">
+        <h3>Payment</h3>
+        <label for="payment-select">Choose payment method:</label>
+        <select id="payment-select">
+            <option value="UPI">UPI</option>
+            <option value="Netbanking">Netbanking</option>
+            <option value="BharatPay">BharatPay</option>
+            <option value="Rupay">Rupay</option>
+        </select>
+        <div class="payment-option">
+            <label>Proceed with payment?</label>
+            <button class="button" onclick="processPayment()">Yes</button>
+            <button class="button" onclick="cancelPayment()">No</button>
+        </div>
+        <div id="payment-status"></div>
+    </div>
+</div>
+
+<div class="thank-you">
+    😊 Thank you for visiting Tiger Sugar Café! 😊
+</div>
+
+<script>
+    const menu = {
+        burger: 50,
+        pizza: 90,
+        fries: 40,
+        coffee: 70,
+        tea: 10,
+        coldcoffee: 100,
+        icecream: 60,
+        waffle: 150,
+        filtercoffee: 50,
+        margheritapizza: 200,
+        masaladosa: 60,
+        mangomilkshake: 180,
+        vegbiryani: 70
+    };
+
+    let totalOrder = 0;
+    let paymentDone = false;
+    let orderedItems = [];
+
+    function addItem() {
+        const itemSelect = document.getElementById('item-select');
+        const selectedItem = itemSelect.value;
+        const itemName = itemSelect.options[itemSelect.selectedIndex].text;
+
+        if (!orderedItems.includes(selectedItem)) {
+            orderedItems.push(selectedItem);
+
+            const orderList = document.getElementById('order-list');
+            const listItem = document.createElement('li');
+            listItem.textContent = itemName;
+            orderList.appendChild(listItem);
+
+            totalOrder += menu[selectedItem];
+            document.getElementById('total-amount').textContent = totalOrder;
+
+            document.getElementById('additional-order').style.display = 'block';
+        } else {
+            alert("Item already added to the order.");
+        }
+    }
+
+    function promptAnotherItem() {
+        document.getElementById('additional-order').style.display = 'none';
+    }
+
+    function finishOrder() {
+        if (paymentDone) {
+            alert('Thank you for your order! Your total is: $' + totalOrder);
+        } else {
+            alert('Please complete the payment to place your order.');
+        }
+    }
+
+    function processPayment() {
+        const paymentSelect = document.getElementById('payment-select');
+        const paymentMethod = paymentSelect.value;
+
+        if (paymentMethod) {
+            document.getElementById('payment-status').textContent = "Payment done via " + paymentMethod;
+            paymentDone = true;
+        } else {
+            document.getElementById('payment-status').textContent = "Payment not done.";
+            paymentDone = false;
+        }
+    }
+</script>
+</body>
+</html>
